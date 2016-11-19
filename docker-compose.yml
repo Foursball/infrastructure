@@ -4,13 +4,18 @@ elasticsearch:
   ports:
     - "9200"
     - "9300"
+  labels:
+    - "traefik.enable=false"
   volumes:
     - /opt/foursball/data:/usr/share/elasticsearch/data
 
 kibana:
   image: kibana:4
+  container_name: log
   ports:
     - "5601:5601"
+  labels:
+    - "traefik.backend=kibana"
   links:
     - elasticsearch
 
@@ -18,5 +23,17 @@ fluentd:
   build: fluentd/
   ports:
     - "24224:24224"
+  labels:
+    - "traefik.enable=false"
   links:
     - elasticsearch
+
+# Proxy
+traefik:
+  image: traefik
+  command: --web --docker --docker.domain=localhost --logLevel=DEBUG
+  ports:
+    - "80:80"
+    - "8080:8080"
+  volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
