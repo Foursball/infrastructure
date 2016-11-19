@@ -9,8 +9,10 @@ api:
   environment:
     - SERVER_URL=http://api.localhost
     - MYSQL_HOST=mysql
+    - FLUENTD_HOST=fluentd
   links:
     - mysql
+    - fluentd
   env_file: .env
   restart: always
 
