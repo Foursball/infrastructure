@@ -8,6 +8,7 @@ elasticsearch:
     - "traefik.enable=false"
   volumes:
     - /opt/foursball/data:/usr/share/elasticsearch/data
+  log_driver: none
   restart: always
 
 kibana:
