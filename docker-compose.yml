@@ -42,3 +42,15 @@ traefik:
   volumes:
     - /var/run/docker.sock:/var/run/docker.sock
   restart: always
+
+# Docker Management
+portainer:
+  image: portainer/portainer
+  container_name: portainer
+  ports:
+    - "9000:9000"
+  labels:
+    - "traefik.backend=portainer"
+  volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+  restart: always
