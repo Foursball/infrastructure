@@ -79,8 +79,11 @@ traefik:
   ports:
     - "80:80"
     - "8080:8080"
+    - "443:443"
   volumes:
     - /var/run/docker.sock:/var/run/docker.sock
+#    - /path/to/traefik.toml:/traefik.toml
+#    - /path/to/acme.json:/acme.json
   restart: always
 
 # Docker Management
