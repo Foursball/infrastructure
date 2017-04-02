@@ -12,8 +12,7 @@ ui:
 api:
   image: foursball/foursball-api:latest
   container_name: app
-  ports:
-    - "1337:1337"
+  mem_limit: 250m
   environment:
     - SERVER_URL=http://app.localhost
     - MYSQL_HOST=mysql
@@ -22,7 +21,7 @@ api:
     - PROXY_URL=http://<local-ip>:4200
     - FLUENTD_HOST=fluentd
 #  volumes:
-#    - /path/to/restore:/usr/src/app/restore
+#    - /path/to/pwd/restore:/usr/src/app/restore
   links:
     - mysql
     - fluentd
@@ -31,41 +30,46 @@ api:
 
 mysql:
   image: mysql:latest
+  container_name: mysql
   ports:
     - "3306:3306"
+  labels:
+    - "traefik.enable=false"
   environment:
     - MYSQL_DATABASE=sails
     - MYSQL_USER=sails
     - MYSQL_PASSWORD=sails
     - MYSQL_RANDOM_ROOT_PASSWORD=true
+#  volumes:
+#    - /path/to/pwd/mysql:/var/lib/mysql
   restart: always
 
 # Logging
 elasticsearch:
   image: elasticsearch:2
+  container_name: elasticsearch
   ports:
     - "9200"
     - "9300"
   labels:
     - "traefik.enable=false"
-  volumes:
-    - /opt/foursball/data:/usr/share/elasticsearch/data
+#  volumes:
+#    - /path/to/pwd/elasticsearch:/usr/share/elasticsearch/data
   log_driver: none
   restart: always
 
 kibana:
   image: kibana:4
   container_name: log
-  ports:
-    - "5601:5601"
-  labels:
-    - "traefik.backend=kibana"
+  mem_limit: 100m
   links:
     - elasticsearch
   restart: always
 
 fluentd:
   build: fluentd/
+  container_name: fluentd
+  mem_limit: 100m
   ports:
     - "24224:24224"
   labels:
@@ -77,6 +81,8 @@ fluentd:
 # Proxy
 traefik:
   image: traefik
+  container_name: traefik
+  mem_limit: 50m
   command: --web --docker --docker.domain=localhost --logLevel=DEBUG
   ports:
     - "80:80"
@@ -84,18 +90,16 @@ traefik:
     - "443:443"
   volumes:
     - /var/run/docker.sock:/var/run/docker.sock
-#    - /path/to/traefik.toml:/traefik.toml
-#    - /path/to/acme.json:/acme.json
+#    - /path/to/pwd/traefik.toml:/traefik.toml
+#    - /path/to/pwd/acme.json:/acme.json
   restart: always
 
 # Docker Management
 portainer:
   image: portainer/portainer
   container_name: portainer
-  ports:
-    - "9000:9000"
-  labels:
-    - "traefik.backend=portainer"
+  mem_limit: 50m
   volumes:
     - /var/run/docker.sock:/var/run/docker.sock
+#    - /path/to/pwd/portainer:/data
   restart: always

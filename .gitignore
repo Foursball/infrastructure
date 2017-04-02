@@ -1,2 +1,6 @@
 .env
 acme.json
+elasticsearch
+portainer
+mysql
+restore
