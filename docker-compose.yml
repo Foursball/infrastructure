@@ -21,6 +21,8 @@ api:
     - PROXY_ENABLED=true
     - PROXY_URL=http://<local-ip>:4200
     - FLUENTD_HOST=fluentd
+#  volumes:
+#    - /path/to/restore:/usr/src/app/restore
   links:
     - mysql
     - fluentd

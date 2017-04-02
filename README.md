@@ -6,6 +6,8 @@ Copy `example.env` to `.env` and replace the values with your own.
 
 There is also a local IP needed for the UI proxy, so replace `<local-ip>` with you local IP in the `docker-compose.yml` file.
 
+Lastly, to restore the DB from Firebase data volume in a restore directory to the API container with the files described in https://github.com/Foursball/foursball-api/tree/data-restore#restoring-data-from-firebase.
+
 ## Running
 To run with native Docker run `docker-compose up -d`. Wait for the environment to initialize then access http://log.localhost for logging, http://portainer.localhost for Docker management, and http://api.localhost for the Foursball REST API.
 
