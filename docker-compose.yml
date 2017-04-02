@@ -1,14 +1,25 @@
-# Apps
+# UI
+ui:
+  image: foursball/foosball:sails-api
+  container_name: ui
+  ports:
+    - "4200:4200"
+  environment:
+    - API_URL=http://app.localhost
+  restart: always
+
+# API
 api:
   image: foursball/foursball-api:latest
-  container_name: api
+  container_name: app
   ports:
-    - "8000:80"
-  labels:
-    - "traefik.backend=api"
+    - "1337:1337"
   environment:
-    - SERVER_URL=http://api.localhost
+    - SERVER_URL=http://app.localhost
     - MYSQL_HOST=mysql
+    - DATA_RESTORE=true
+    - PROXY_ENABLED=true
+    - PROXY_URL=http://<local-ip>:4200
     - FLUENTD_HOST=fluentd
   links:
     - mysql

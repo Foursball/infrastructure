@@ -4,6 +4,8 @@ Consolidated Foursball infrastructure for use locally.
 ## Setup
 Copy `example.env` to `.env` and replace the values with your own.
 
+There is also a local IP needed for the UI proxy, so replace `<local-ip>` with you local IP in the `docker-compose.yml` file.
+
 ## Running
 To run with native Docker run `docker-compose up -d`. Wait for the environment to initialize then access http://log.localhost for logging, http://portainer.localhost for Docker management, and http://api.localhost for the Foursball REST API.
 
